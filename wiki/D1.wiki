@@ -6,8 +6,8 @@ I got it in lunch, :), it's interesting. In the Hackweek IV, I'll enjoy it in 5 
 
 = Details =
 
-  * Create the project in gooogle.
+ * Create the project in gooogle.
 
-= Link =
+= Links =
 
-https://features.opensuse.org/hackweek
+ * https://features.opensuse.org/hackweek
