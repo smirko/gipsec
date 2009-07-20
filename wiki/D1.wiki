@@ -1,13 +1,13 @@
-# work log for day 1.
+ # work log for day 1.
 
-= Ideas =
+== Ideas ==
 
 I got it in lunch, :), it's interesting. In the Hackweek IV, I'll enjoy it in 5 days, so let's begin in day 1.
 
-= Details =
+== Details ==
 
  * Create the project in gooogle.
 
-= Links =
+== Links ==
 
  * https://features.opensuse.org/hackweek
