@@ -1,0 +1,20 @@
+gipsec
+===========
+
+This project provide the GUI to configure the server and client mode of
+ipsec-tools, monitor the connection traffic and view the connection log.
+Also it provide a text graphic interface could be used in terminal.
+
+This package provides a way to use the native IPsec functionality 
+in the Linux 2.6+ kernel.
+
+Sources can be found at the gipsec home page at:
+	http://code.google.com/p/gipsec/
+Also you can reports bugs in issues page, and view project wiki in wiki page.
+
+And SVN repository is hosted at google code:
+	svn checkout http://gipsec.googlecode.com/svn/trunk/ gipsec-read-only
+
+Credits:
+	ipsec-tools, see http://ipsec-tools.sourceforge.net/
+	SUSE Linux, see http://www.novell.com/
