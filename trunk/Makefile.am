@@ -1,6 +1,6 @@
 SUBDIRS = src
 
-DIST_SUBDIRS = src rpm
+DIST_SUBDIRS = src
 
 EXTRA_DIST = README NEWS HACKING ChangeLog
 

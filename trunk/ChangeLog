@@ -1,0 +1,10 @@
+2009-07-22  Bin Li  <libin.charles@gmail.com>
+	* autogen.sh:
+	* configure.in:
+	* src/main.c:
+	* src/gipsec.c:
+	* src/gipsec.h:
+	* src/gipsec-options.c:
+	* src/gipsec-options.h:
+	* src/gipsec.glade:
+	Add basic frame code.
