@@ -25,12 +25,29 @@
  * $Id$
  */
 #include "gipsec.h"
+#include <glib/gi18n.h>
 
 G_DEFINE_TYPE(GIPSec, gipsec, G_TYPE_OBJECT)
 
-static void
-gipsec_init (GIPSec *gipsec)
+static GObject *
+constructor (GType type,
+		guint n_props,
+		GObjectConstructParam *construct_props)
 {
+	GIPSec *gipsec = NULL;
+
+	gipsec = GIPSEC (G_OBJECT_CLASS (gipsec_parent_class)->constructor (type, n_props, construct_props));
+
+	gipsec->glade_file = g_build_filename (GLADEDIR, "gipsec.glade", NULL);
+	if (!gipsec->glade_file ||
+		   	!g_file_test (gipsec->glade_file, G_FILE_TEST_IS_REGULAR)) {
+		g_warning (_("The GIPSec could not find the glade file."));
+	}
+
+	gipsec->main_window_xml =
+		glade_xml_new (gipsec->glade_file, "gipsec_main_window", NULL);
+
+	return G_OBJECT (gipsec);
 }
 
 static void
@@ -39,8 +56,19 @@ finalize (GObject *object)
 }
 
 static void
+gipsec_init (GIPSec *gipsec)
+{
+}
+
+static void
 gipsec_class_init (GIPSecClass *gipsec_class)
 {
+	GObjectClass *object_class = G_OBJECT_CLASS (gipsec_class);
+
+	object_class->constructor = constructor;
+
+	/* Virtual methods */
+	object_class->finalize = finalize;
 }
 
 GIPSec *

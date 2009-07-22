@@ -27,14 +27,15 @@
 #ifndef GIPSEC_H
 #define GIPSEC_H
 
+#include <glade/glade.h>
 #include <glib/gtypes.h>
 #include <glib-object.h>
 
 #define GIPSEC_TYPE                (gipsec_get_type ())
 #define GIPSEC(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), GIPSEC_TYPE, GIPSec))
 #define GIPSEC_CLASS(klass)        (G_TYPE_CHECK_CLASS_CAST ((klass), GIPSEC_TYPE, GIPSecClass))
-#define IS_GIPSEC(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIPSEC_TYPE))
-#define IS_GIPSEC_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((obj), GIPSEC_TYPE))
+#define IS_GIPSEC(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GIPSEC_TYPE))
+#define IS_GIPSEC_CLASS(klass)     (G_TYPE_CHECK_CLASS_TYPE ((obj), GIPSEC_TYPE))
 #define GIPSEC_GET_CLASS(obj)      (G_TYPE_INSTANCE_GET_CLASS ((obj), GIPSEC_TYPE, GIPSecClass))
 
 typedef struct
@@ -43,10 +44,13 @@ typedef struct
 
 	char* glade_file;
 
+	GladeXML* main_window_xml;
+
 } GIPSec;
 
 typedef struct
 {
+	GObjectClass parent;
 } GIPSecClass;
 
 GType gipsec_get_type (void);

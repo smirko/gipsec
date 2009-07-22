@@ -9,7 +9,11 @@ gipsec_SOURCES = \
 
 gipsec_CPPFLAGS = \
 	$(GIPSEC_CFLAGS) \
-	-DGIPSEC_LOCALEDIR=\"$(datadir)/locale\"
+	-DGIPSEC_LOCALEDIR=\"$(datadir)/locale\" \
+	-DGLADEDIR=\""$(gladedir)"\"
 
 gipsec_LDADD = \
 	$(GIPSEC_LIBS)
+
+gladedir = $(datadir)/gipsec
+glade_DATA = gipsec.glade
