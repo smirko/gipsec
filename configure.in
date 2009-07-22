@@ -23,7 +23,7 @@ AM_GLIB_GNU_GETTEXT
 
 PKG_CHECK_MODULES(GOBJECT, gobject-2.0)
 
-PKG_CHECK_MODULES(GIPSEC, [glib-2.0 >= 2.10 gtk+-2.0 >= 2.10])
+PKG_CHECK_MODULES(GIPSEC, [glib-2.0 >= 2.10 gtk+-2.0 >= 2.10 libglade-2.0])
 
 GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
 AC_SUBST(GLIB_GENMARSHAL)

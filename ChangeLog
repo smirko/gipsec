@@ -1,4 +1,9 @@
 2009-07-22  Bin Li  <libin.charles@gmail.com>
+	* configure.in:
+	* src/gipsec.h:
+	* src/Makefile.am:
+	* src/gipsec.c:
+	Display the basic window.
 	* autogen.sh:
 	* configure.in:
 	* src/main.c:
