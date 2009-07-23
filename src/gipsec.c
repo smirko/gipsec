@@ -24,8 +24,9 @@
  * See ChangeLog to get more details.
  * $Id$
  */
-#include "gipsec.h"
 #include <glib/gi18n.h>
+#include "gipsec.h"
+#include "gipsec-options.h"
 
 G_DEFINE_TYPE(GIPSec, gipsec, G_TYPE_OBJECT)
 
@@ -38,21 +39,42 @@ constructor (GType type,
 
 	gipsec = GIPSEC (G_OBJECT_CLASS (gipsec_parent_class)->constructor (type, n_props, construct_props));
 
+	g_set_application_name (_("GIPSec monitor window"));
+
 	gipsec->glade_file = g_build_filename (GLADEDIR, "gipsec.glade", NULL);
 	if (!gipsec->glade_file ||
 		   	!g_file_test (gipsec->glade_file, G_FILE_TEST_IS_REGULAR)) {
 		g_warning (_("The GIPSec could not find the glade file."));
+		goto error;
 	}
 
-	gipsec->main_window_xml =
-		glade_xml_new (gipsec->glade_file, "gipsec_main_window", NULL);
+	if (is_dialog_window()) {
+		gipsec->config_window_xml =
+			glade_xml_new (gipsec->glade_file, "gipsec_config_window", NULL);
+	} else {
+		gipsec->main_window_xml =
+			glade_xml_new (gipsec->glade_file, "gipsec_main_window", NULL);
+	}
 
 	return G_OBJECT (gipsec);
+
+error:
+	g_object_unref (gipsec);
+
+	return NULL;
 }
 
 static void
 finalize (GObject *object)
 {
+	GIPSec *gipsec = GIPSEC (object);
+
+	g_free (gipsec->glade_file);
+
+	if (gipsec->main_window_xml)
+		g_object_unref (gipsec->main_window_xml);
+
+	G_OBJECT_CLASS (gipsec_parent_class)->finalize (object);
 }
 
 static void

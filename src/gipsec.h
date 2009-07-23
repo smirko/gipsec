@@ -45,6 +45,7 @@ typedef struct
 	char* glade_file;
 
 	GladeXML* main_window_xml;
+	GladeXML* config_window_xml;
 
 } GIPSec;
 

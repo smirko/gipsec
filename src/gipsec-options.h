@@ -28,5 +28,7 @@
 #define GIPSEC_OPTIONS_H
 
 void options_parse (int argc, char *argv[]);
+gboolean is_server_mode ();
+gboolean is_dialog_window ();
 
 #endif /* GIPSEC_OPTIONS_H */

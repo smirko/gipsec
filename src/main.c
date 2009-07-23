@@ -33,11 +33,35 @@
 #include <libintl.h>
 #include <gtk/gtk.h>
 #include "gipsec.h"
+#include "gipsec-options.h"
 
+static GMainLoop *loop = NULL;
+
+static void
+signal_handler (int signo)
+{
+	if (signo == SIGINT || signo == SIGTERM) {
+		g_message ("Caught signal %d, shutting down...", signo);
+		g_main_loop_quit (loop);
+	}
+}
+
+static void
+setup_signals (void)
+{
+	struct sigaction action;
+	sigset_t mask;
+
+	sigemptyset (&mask);
+	action.sa_handler = signal_handler;
+	action.sa_mask = mask;
+	action.sa_flags = 0;
+	sigaction (SIGTERM,  &action, NULL);
+	sigaction (SIGINT,  &action, NULL);
+}
 
 int main (int argc, char *argv[])
 {
-	GMainLoop *loop = NULL;
 	GIPSec *gipsec = NULL;
 
 	// set directory containing message catalogs
@@ -49,6 +73,10 @@ int main (int argc, char *argv[])
 
 	textdomain (GETTEXT_PACKAGE);
 
+	options_parse (argc, argv);
+
+	setup_signals ();
+
 	loop = g_main_loop_new (NULL, FALSE);
 
 	gipsec = gipsec_new ();
@@ -57,5 +85,7 @@ int main (int argc, char *argv[])
 
 	g_main_loop_run (loop);
 
-	exit (0);
+	g_object_unref (G_OBJECT (gipsec));
+
+	return 0;
 }

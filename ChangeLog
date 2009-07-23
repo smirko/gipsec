@@ -1,7 +1,10 @@
-2009-07-23  Yadan Fan <ydfan@novell.com>
-Change name of window form from "window1"to "IPsec with GUI"
-
-============================================================
+2009-07-23  Bin Li  <libin.charles@gmail.com>
+	* src/gipsec.h:
+	* src/gipsec-options.c:
+	* src/main.c:
+	* src/gipsec-options.h:
+	* src/gipsec.c:
+	Add the run mode parameter.
 2009-07-22  Bin Li  <libin.charles@gmail.com>
 	* configure.in:
 	* src/gipsec.h:
