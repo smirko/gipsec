@@ -24,9 +24,12 @@
  * See ChangeLog to get more details.
  * $Id$
  */
+#include <stdlib.h>
 #include <glib.h>
 
-static int debug = 0;
+static gboolean debug = FALSE;
+static gboolean no_main_window = FALSE;
+static gchar* run_mode = NULL;
 
 void
 options_parse (int argc, char *argv[])
@@ -34,15 +37,26 @@ options_parse (int argc, char *argv[])
 	GOptionContext *opt_ctx = NULL;
 	GError *error = NULL;
 	GOptionEntry entries[] = {
-		{ "client", 0, 0, G_OPTION_ARG_NONE, &debug, "Run in VPN client mode", NULL },
-		{ "server", 0, 0, G_OPTION_ARG_NONE, &debug, "Run in VPN server mode", NULL },
-		{ "monitor", 0, 0, G_OPTION_ARG_NONE, &debug, "Run with the monitor window", NULL },
-		{ "debug", 0, 0, G_OPTION_ARG_NONE, &debug, "Output to console rather than syslog", NULL },
+		{ "mode", 'm', 0,
+		   	G_OPTION_ARG_STRING,
+		   	&run_mode,
+		   	"Run in VPN client or server mode",
+		   	NULL },
+		{ "dialog", 'd', 0,
+		   	G_OPTION_ARG_NONE,
+		   	&no_main_window,
+		   	"Run in Dialog without the monitor window",
+		   	NULL },
+		{ "debug", 'v', 0,
+		   	G_OPTION_ARG_NONE,
+		   	&debug,
+		   	"Output to console rather than syslog",
+		   	NULL },
 		{ NULL }
 	};
 
 	opt_ctx = g_option_context_new (NULL);
-	g_option_context_set_summary (opt_ctx, "ipsec-tools configure and monitor GUI.");
+	g_option_context_set_summary (opt_ctx, "The ipsec-tools' GUI to use VPN easily.");
 	g_option_context_add_main_entries (opt_ctx, entries, NULL);
 
 	if (!g_option_context_parse (opt_ctx, &argc, &argv, &error)) {
@@ -52,4 +66,24 @@ options_parse (int argc, char *argv[])
 	}
 
 	g_option_context_free (opt_ctx);
+}
+
+gboolean
+is_server_mode ()
+{
+	if (strncmp (run_mode, "server", 6) == 0)
+		return TRUE;
+	else if (strncmp (run_mode, "client", 6) == 0)
+		return FALSE;
+	else
+		g_warning ("Plese set the correct run mode, client or server.");
+
+	// The default mode is client
+	return FALSE;
+}
+
+gboolean
+is_dialog_window ()
+{
+	return no_main_window;
 }
