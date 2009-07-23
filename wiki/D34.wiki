@@ -1,0 +1,10 @@
+#Day 3 and 4 log
+
+= Details =
+Day 3
+
+ * Make the project could be configured and compiled by auto tools.
+ * Dismissing the warning, let the program could be run
+
+Day 4
+ * Setup signal, let it to release resource when exit.
