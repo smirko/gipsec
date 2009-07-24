@@ -44,9 +44,11 @@ typedef struct
 
 	GMainLoop *loop;
 	char* glade_file;
+	int run_mode;                   // 0 is client, 1 is server
 
 	GladeXML* main_window_xml;
 	GladeXML* config_window_xml;
+	GladeXML* client_window_xml;
 
 } GIPSec;
 

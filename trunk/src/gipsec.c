@@ -30,12 +30,93 @@
 
 G_DEFINE_TYPE(GIPSec, gipsec, G_TYPE_OBJECT)
 
+static void
+start_button_clicked_cb (GtkWidget *button, gpointer user_data)
+{
+	GIPSec *gipsec = GIPSEC (user_data);
+	GtkWidget *widget = NULL;
+
+	if (gipsec->run_mode) {
+		// when the in server mode
+	} else {
+		// when the in client mode
+		if (NULL == gipsec->client_window_xml) {
+			// This client window isn't initial yet
+			gipsec->client_window_xml =
+				glade_xml_new (gipsec->glade_file,
+						"gipsec_client_window",
+						NULL);
+		}
+
+		widget = glade_xml_get_widget (gipsec->client_window_xml,
+			   	"gipsec_client_window");
+		g_return_if_fail (widget != NULL);
+
+		gtk_widget_show_all (widget);
+	}
+}
+
+static void
+stop_button_clicked_cb (GtkWidget *button, gpointer user_data)
+{
+	GIPSec *gipsec = GIPSEC (user_data);
+
+	if (gipsec->run_mode) {
+		// when the in server mode
+	} else {
+		// when the in client mode
+	}
+}
+
+static void
+config_button_clicked_cb (GtkWidget *button, gpointer user_data)
+{
+	GIPSec *gipsec = GIPSEC (user_data);
+
+	if (gipsec->run_mode) {
+		// when the in server mode
+	} else {
+		// when the in client mode
+	}
+}
+
+static void
+setup_mainwindow (GIPSec *gipsec)
+{
+	GtkWidget* widget = NULL;
+
+	g_debug ("setup_mainwindow...");
+
+	widget = glade_xml_get_widget (gipsec->main_window_xml, "start_toolbutton");
+	g_return_if_fail (widget != NULL);
+
+	g_signal_connect (widget, "clicked",
+			G_CALLBACK (start_button_clicked_cb),
+			gipsec);
+
+	widget = glade_xml_get_widget (gipsec->main_window_xml, "stop_toolbutton");
+	g_return_if_fail (widget != NULL);
+
+	g_signal_connect (widget, "clicked",
+			G_CALLBACK (stop_button_clicked_cb),
+			gipsec);
+
+	widget = glade_xml_get_widget (gipsec->main_window_xml, "config_toolbutton");
+	g_return_if_fail (widget != NULL);
+
+	g_signal_connect (widget, "clicked",
+			G_CALLBACK (config_button_clicked_cb),
+			gipsec);
+}
+
 static GObject *
 constructor (GType type,
 		guint n_props,
 		GObjectConstructParam *construct_props)
 {
 	GIPSec *gipsec = NULL;
+
+	g_debug ("constructor...");
 
 	gipsec = GIPSEC (G_OBJECT_CLASS (gipsec_parent_class)->constructor (type, n_props, construct_props));
 
@@ -54,6 +135,8 @@ constructor (GType type,
 	} else {
 		gipsec->main_window_xml =
 			glade_xml_new (gipsec->glade_file, "gipsec_main_window", NULL);
+
+		setup_mainwindow (gipsec);
 	}
 
 	return G_OBJECT (gipsec);
@@ -80,12 +163,22 @@ finalize (GObject *object)
 static void
 gipsec_init (GIPSec *gipsec)
 {
+	g_debug ("gipsec_init...");
+
+	g_return_if_fail (gipsec != NULL);
+
+	if (is_server_mode ())
+		gipsec->run_mode = 1;
+	else
+		gipsec->run_mode = 0;
 }
 
 static void
 gipsec_class_init (GIPSecClass *gipsec_class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS (gipsec_class);
+
+	g_debug ("gipsec_class_init...");
 
 	object_class->constructor = constructor;
 
