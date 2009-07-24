@@ -1,5 +1,11 @@
 2009-07-24  Bin Li  <libin.charles@gmail.com>
 	* src/gipsec.h:
+	* src/gipsec-options.c:
+	* src/gipsec.glade:
+	* src/main.c:
+	* src/gipsec.c:
+	Fix the running crash, and add the client config window.
+	* src/gipsec.h:
 	* src/main.c:
 	Move the mainloop to GIPSec.
 2009-07-23  Bin Li  <libin.charles@gmail.com>

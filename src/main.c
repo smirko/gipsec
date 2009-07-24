@@ -75,11 +75,11 @@ int main (int argc, char *argv[])
 
 	setup_signals ();
 
-	gipsec->loop = g_main_loop_new (NULL, FALSE);
-
 	gipsec = gipsec_new ();
 	if (gipsec == NULL)
 		exit (1);
+
+	gipsec->loop = g_main_loop_new (NULL, FALSE);
 
 	g_main_loop_run (gipsec->loop);
 

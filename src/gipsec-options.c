@@ -25,6 +25,7 @@
  * $Id$
  */
 #include <stdlib.h>
+#include <string.h>
 #include <glib.h>
 
 static gboolean debug = FALSE;
@@ -71,6 +72,9 @@ options_parse (int argc, char *argv[])
 gboolean
 is_server_mode ()
 {
+	if (run_mode == NULL)
+		return FALSE;
+
 	if (strncmp (run_mode, "server", 6) == 0)
 		return TRUE;
 	else if (strncmp (run_mode, "client", 6) == 0)
