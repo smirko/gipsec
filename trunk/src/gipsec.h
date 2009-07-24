@@ -42,6 +42,7 @@ typedef struct
 {
 	GObject parent_instance;
 
+	GMainLoop *loop;
 	char* glade_file;
 
 	GladeXML* main_window_xml;

@@ -35,14 +35,14 @@
 #include "gipsec.h"
 #include "gipsec-options.h"
 
-static GMainLoop *loop = NULL;
+static GIPSec *gipsec = NULL;
 
 static void
 signal_handler (int signo)
 {
 	if (signo == SIGINT || signo == SIGTERM) {
 		g_message ("Caught signal %d, shutting down...", signo);
-		g_main_loop_quit (loop);
+		g_main_loop_quit (gipsec->loop);
 	}
 }
 
@@ -62,8 +62,6 @@ setup_signals (void)
 
 int main (int argc, char *argv[])
 {
-	GIPSec *gipsec = NULL;
-
 	// set directory containing message catalogs
 	bindtextdomain (GETTEXT_PACKAGE, GIPSEC_LOCALEDIR);
 	// set encoding of message translations
@@ -77,13 +75,13 @@ int main (int argc, char *argv[])
 
 	setup_signals ();
 
-	loop = g_main_loop_new (NULL, FALSE);
+	gipsec->loop = g_main_loop_new (NULL, FALSE);
 
 	gipsec = gipsec_new ();
 	if (gipsec == NULL)
 		exit (1);
 
-	g_main_loop_run (loop);
+	g_main_loop_run (gipsec->loop);
 
 	g_object_unref (G_OBJECT (gipsec));
 
