@@ -1,0 +1,7 @@
+#Day 5's log
+
+= Details =
+
+ * Add the client configure window
+ * fix crash for some pointer is null.
+ * Add the data dir for desktop file
