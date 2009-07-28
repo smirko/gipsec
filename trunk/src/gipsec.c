@@ -30,11 +30,30 @@
 
 G_DEFINE_TYPE(GIPSec, gipsec, G_TYPE_OBJECT)
 
+gchar *
+gipsec_get_user_config_dir ()
+{
+	gchar *config_dir = NULL;
+	const gchar *home;
+
+	home = g_get_home_dir ();
+	if (home != NULL)
+	{  
+		config_dir = g_build_filename (home,
+				".gipsec",
+				NULL);
+	}
+
+	return config_dir;
+}
+
 static void
 start_button_clicked_cb (GtkWidget *button, gpointer user_data)
 {
 	GIPSec *gipsec = GIPSEC (user_data);
 	GtkWidget *widget = NULL;
+
+	g_return_if_fail (gipsec != NULL);
 
 	if (gipsec->run_mode) {
 		// when the in server mode
@@ -61,6 +80,8 @@ stop_button_clicked_cb (GtkWidget *button, gpointer user_data)
 {
 	GIPSec *gipsec = GIPSEC (user_data);
 
+	g_return_if_fail (gipsec != NULL);
+
 	if (gipsec->run_mode) {
 		// when the in server mode
 	} else {
@@ -73,6 +94,8 @@ config_button_clicked_cb (GtkWidget *button, gpointer user_data)
 {
 	GIPSec *gipsec = GIPSEC (user_data);
 
+	g_return_if_fail (gipsec != NULL);
+
 	if (gipsec->run_mode) {
 		// when the in server mode
 	} else {
@@ -80,20 +103,25 @@ config_button_clicked_cb (GtkWidget *button, gpointer user_data)
 	}
 }
 
-static void
-main_window_quit (GtkWidget *main_window, gpointer user_data)
+static gboolean
+main_window_quit (GtkWidget *main_window, GdkEvent *event, gpointer user_data)
 {
-	GMainLoop *loop = NULL;
-	
-	GIPSec *gipsec = GIPSEC(user_data);
+	GIPSec *gipsec = GIPSEC (user_data);
 
-	loop = gipsec->loop;
+	g_debug ("main_window_quit...");
 
-	if (loop == NULL)
-		g_debug("here\n");
+	//return TRUE; // do nothing when close window
+	return FALSE;
+}
 
-	g_main_loop_quit(loop);
-	
+static void
+main_window_destroy (GtkObject *main_window, gpointer user_data)
+{
+	GIPSec *gipsec = GIPSEC (user_data);
+
+	g_debug ("main_window_destroy...");
+
+	g_main_loop_quit (gipsec->loop);
 }
 
 static void
@@ -127,8 +155,15 @@ setup_mainwindow (GIPSec *gipsec)
 	widget = glade_xml_get_widget (gipsec->main_window_xml, "gipsec_main_window");
 	g_return_if_fail (widget != NULL);
 
+	// I register the "delete_event" and "destroy" at the same time,
+	// to know about how to use these two signal, have some difference. :)
 	g_signal_connect (widget, "delete_event",
 			   G_CALLBACK (main_window_quit),
+			   //G_CALLBACK (gtk_widget_hide_on_delete), // the window would be hided
+			   gipsec);
+
+	g_signal_connect (widget, "destroy",
+			   G_CALLBACK (main_window_destroy),
 			   gipsec);
 }
 
@@ -175,6 +210,7 @@ finalize (GObject *object)
 {
 	GIPSec *gipsec = GIPSEC (object);
 
+	g_debug ("finalize...");
 	g_free (gipsec->glade_file);
 
 	if (gipsec->main_window_xml)
