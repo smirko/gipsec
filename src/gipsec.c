@@ -81,6 +81,22 @@ config_button_clicked_cb (GtkWidget *button, gpointer user_data)
 }
 
 static void
+main_window_quit (GtkWidget *main_window, gpointer user_data)
+{
+	GMainLoop *loop = NULL;
+	
+	GIPSec *gipsec = GIPSEC(user_data);
+
+	loop = gipsec->loop;
+
+	if (loop == NULL)
+		g_debug("here\n");
+
+	g_main_loop_quit(loop);
+	
+}
+
+static void
 setup_mainwindow (GIPSec *gipsec)
 {
 	GtkWidget* widget = NULL;
@@ -107,6 +123,13 @@ setup_mainwindow (GIPSec *gipsec)
 	g_signal_connect (widget, "clicked",
 			G_CALLBACK (config_button_clicked_cb),
 			gipsec);
+
+	widget = glade_xml_get_widget (gipsec->main_window_xml, "gipsec_main_window");
+	g_return_if_fail (widget != NULL);
+
+	g_signal_connect (widget, "delete_event",
+			   G_CALLBACK (main_window_quit),
+			   gipsec);
 }
 
 static GObject *
