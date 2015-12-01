@@ -1,0 +1,2 @@
+This project provide the GUI to configure the server and client mode of ipsec-tools, monitor the connection traffic and view the connection log.
+Also it provide a text graphic interface could be used in terminal.
